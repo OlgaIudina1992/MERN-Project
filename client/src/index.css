@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+input[type="text"], input[type="number"], input[type="password"], input[type="title"], input[type="summary"],
+textarea{
+    @apply my-1 py-2 px-3 border-2 border-gray-200 rounded-xl w-full text-gray-800;
+}
+textarea{
+    height: 140px;
+}
+button.primary{
+    @apply border-2 border-white text-white p-2 rounded-full text-lg font-bold hover:bg-white hover:border-2 hover:border-green-800 hover:text-green-950 hover:scale-105
+}
+img{
+    @apply w-full rounded-xl hover:shadow-xl;
+}
+span.pill{
+    @apply font-light bg-green-700 rounded-full p-2 text-white hover:font-bold;
+}
