@@ -10,7 +10,7 @@ export default function LoginPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch("http://localhost:5000//login", {
             method: "POST",
             body: JSON.stringify({username, password}),
             headers: {'Content-Type':'application/json'},
@@ -56,8 +56,7 @@ export default function LoginPage() {
                 <button disabled={false} className="primary">Login</button>
                 <Link to={"/register"}>
                 <span className="text-white font-light hover:font-semibold">Don't have an account? Register here!</span>
-                </Link>
-                <span className="text-white font-bold">Error message</span>
+                </Link>                
             </div>
         </div>
         </form>    

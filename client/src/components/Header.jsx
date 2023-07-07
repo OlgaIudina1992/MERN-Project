@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 export default function Header() {
   const {userInfo, setUserInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch("http://localhost:5000/api/auth/profile", {
+    fetch("http://localhost:5000/profile", {
       credentials: "include",
     }).then(res => {
       res.json().then(userInfo => {
@@ -15,7 +15,7 @@ export default function Header() {
   }, []);
 
   const handleLogout = async () => {
-    await fetch("http://localhost:5000/api/auth/logout", {
+    await fetch("http://localhost:5000/logout", {
       credentials: "include",
       method: "POST", 
     });
@@ -46,7 +46,7 @@ export default function Header() {
             </div>) : (
               <div className="flex justify-end gap-2">            
               <button onClick={handleLogout} className="primary">Logout</button>     
-            <Link to={"/create"}>
+            <Link to={"/post"}>
               <button className="primary">Post as {userInfo?.username}</button>
             </Link>
             </div>

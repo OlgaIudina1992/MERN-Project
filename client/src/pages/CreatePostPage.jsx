@@ -1,29 +1,37 @@
 import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { Link } from "react-router-dom";
-
-const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, false] }],
-      ['bold', 'italic', 'underline','strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image'],
-      ['clean']
-    ],
-  };
-  const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image'
-  ];
+import { Link, Navigate } from "react-router-dom";
+import Quill from "../components/Quill";
 
 export default function CreatePostPage() {
     const [title, setTitle] = useState('');
     const [summary, setSummary] = useState('');
     const [badge, setBadge] = useState('');
     const [content, setContent] = useState('');
+    const[files, setFiles] = useState('');
+    const[redirect, setRedirect] = useState(false);
+
+    const handleSubmit = async (ev) => {
+        const data = new FormData();
+        data.set("title", title);
+        data.set("summary", summary);
+        data.set("badge", badge);
+        data.set("content", content);
+        data.set("file", files[0]);
+
+        ev.preventDefault();        
+        const response = await fetch("http://localhost:5000/post", {
+            method: "POST",
+            body: data,
+            credentials: 'include',             
+        });
+        if (response.ok) {
+            setRedirect(true);
+        }
+    }
+
+    if (redirect) {
+        return <Navigate to={'/'} />
+    }
 
     return (<>
         <div>
@@ -33,31 +41,31 @@ export default function CreatePostPage() {
             </svg>
             </Link>
         </div>    
-        <div className="flex flex-col items-center justify-between mt-12">
+        <div className="flex flex-col items-center justify-center mt-12 ml-44 w-4/5 ">
         
         <h1 className="text-4xl capitalize font-bold p-2">Share your thoughts</h1>
-            <form className="border-2 border-green-700 p-8 rounded-2xl">
+            <form onSubmit={handleSubmit} className="border-2 border-green-700 p-8 rounded-2xl">
                 <input 
                     type="title" 
                     value={title} 
-                    onChange={event => setTitle(event.target.value)}
+                    onChange={ev => setTitle(ev.target.value)}
                     placeholder="Your Title" />
                 <input 
                     type="summary"
                     value={summary} 
-                    onChange={event => setSummary(event.target.value)} 
+                    onChange={ev => setSummary(ev.target.value)} 
                     placeholder="Summary" />
                 <input 
                     type="text" 
                     value={badge} 
-                    onChange={event => setBadge(event.target.value)}
+                    onChange={ev => setBadge(ev.target.value)}
                     placeholder="Give Your Post a Badge!" />
-                <input className="p-2" type="file" />
-                <ReactQuill 
-                    value={content} 
-                    onChange={newValue => setContent(newValue)}
-                    modules={modules} 
-                    formats={formats} />
+                <input className="p-2" 
+                    type="file"
+                    onChange={ev => setFiles(ev.target.files)} />
+                
+                <Quill value={content} onChange={setContent} />
+                
                 <button className="bg-green-700 primary w-full">Post</button>
             </form>
         </div>

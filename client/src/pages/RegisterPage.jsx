@@ -7,7 +7,7 @@ export default function RegisterPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await fetch("http://localhost:5000/api/auth/register", {
+        const response = await fetch("http://localhost:5000/register", {
             method: "POST",
             body: JSON.stringify({username, password}),
             headers: {'Content-Type':'application/json'},
@@ -47,7 +47,6 @@ export default function RegisterPage() {
                 <Link to={"/login"}>
                 <span className="text-white font-light hover:font-semibold">Already have an account? Sign in!</span>
                 </Link>
-                <span className="text-white font-bold">Error message</span>
         </div>
         </div>
         </form>
